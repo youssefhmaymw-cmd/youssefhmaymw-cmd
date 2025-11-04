@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SirriYH — تسجيل الدخول</title>
+  <style>
+    :root{
+      --bg-overlay: rgba(4,6,15,0.6);
+      --card-bg: rgba(255,255,255,0.04);
+      --accent1: #8b5cf6;
+      --accent2: #06b6d4;
+      --glass-border: rgba(255,255,255,0.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      direction: rtl;
+      color:#fff;
+      background: url('https://i.postimg.cc/FH92TLH4/file-000000002ad871f49af8d9730fb2f5ac.png') center/cover no-repeat;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* دِعامة داكنة خلف البطاقة */
+    .overlay{position:fixed;inset:0;background:var(--bg-overlay);backdrop-filter: blur(6px);z-index:0}
+
+    /* بطاقة الدخول */
+    .card{
+      position:relative;
+      z-index:2;
+      width:min(420px, 92vw);
+      padding:28px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6), 0 1px 0 rgba(255,255,255,0.02) inset;
+      overflow:hidden;
+    }
+
+    /* إطار لامع متحرك */
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-50%;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.06) 55%, transparent 100%);
+      transform: rotate(15deg) translateX(-120%);
+      animation: shine 3.2s linear infinite;
+      pointer-events:none;
+      mix-blend-mode: overlay;
+    }
+    @keyframes shine{
+      0%{transform: rotate(15deg) translateX(-120%)}
+      100%{transform: rotate(15deg) translateX(120%)}
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .logo{
+      width:54px;height:54px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:inline-grid;place-items:center;font-weight:800;color:#041025;
+      box-shadow:0 6px 18px rgba(11,10,20,0.5);
+    }
+    h1{margin:0;font-size:20px;color:var(--accent1)}
+    p.lead{margin:8px 0 22px;color:#cbd5e1;font-size:13px}
+
+    form{display:flex;flex-direction:column;gap:12px}
+    label{font-size:12px;color:#cbd5e1;margin-bottom:6px;display:block}
+    .input{
+      width:100%;
+      background: rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.06);
+      padding:12px 14px;
+      border-radius:10px;
+      color:#fff;
+      outline:none;
+      transition: box-shadow .18s, border-color .18s, transform .08s;
+      font-size:14px;
+      backdrop-filter: blur(4px);
+    }
+    .input:focus{
+      border-color: rgba(139,92,246,0.9);
+      box-shadow: 0 6px 22px rgba(139,92,246,0.12);
+      transform: translateY(-1px);
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;margin-top:6px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      transition: transform .14s, box-shadow .14s;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      color:#041025;
+      box-shadow:0 10px 30px rgba(11,10,20,0.45);
+    }
+    .btn:active{transform:translateY(1px)}
+    .link{
+      color:#cbd5e1;
+      text-decoration:none;
+      font-size:13px;
+    }
+    .link:hover{color:var(--accent2)}
+
+    .small{
+      font-size:12px;color:#9ca3af;margin-top:8px;text-align:center;
+    }
+
+    /* رسائل خطأ / نجاح */
+    .msg{padding:10px;border-radius:8px;font-size:13px;display:none}
+    .msg.success{background:linear-gradient(90deg, rgba(6,182,212,0.12), rgba(139,92,246,0.08));color:#c7f9ff;border:1px solid rgba(6,182,212,0.12)}
+    .msg.error{background:rgba(255,0,0,0.06);color:#ffdede;border:1px solid rgba(255,0,0,0.08)}
+
+    /* responsive */
+    @media (max-width:420px){
+      .brand{gap:10px}
+      .logo{width:46px;height:46px}
+      .card{padding:18px}
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" aria-hidden="true"></div>
+
+  <main class="card" role="main" aria-labelledby="title">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">SY</div>
+      <div>
+        <h1 id="title">مرحبا بك في SirriYH</h1>
+        <div class="lead">تسجيل الدخول بأمان لمشاركة أو إدارة المحتوى</div>
+      </div>
+    </div>
+
+    <div id="message" class="msg" role="status" aria-live="polite"></div>
+
+    <form id="loginForm" autocomplete="on" novalidate>
+      <div>
+        <label for="email">البريد الإلكتروني</label>
+        <input id="email" class="input" name="email" type="email" inputmode="email" placeholder="you@example.com" required aria-required="true" />
+      </div>
+
+      <div>
+        <label for="password">كلمة السر</label>
+        <input id="password" class="input" name="password" type="password" placeholder="••••••••" minlength="6" required aria-required="true" />
+      </div>
+
+      <div class="actions">
+        <a href="reset.html" class="link" id="forgot">هل نسيت كلمة السر؟</a>
+        <button type="submit" class="btn" id="loginBtn">تسجيل الدخول</button>
+      </div>
+
+      <div class="small">أو <a class="link" href="#" id="demoBtn">تجربة كزائر</a></div>
+    </form>
+  </main>
+
+  <script>
+    (function(){
+      const form = document.getElementById('loginForm');
+      const email = document.getElementById('email');
+      const pass = document.getElementById('password');
+      const msg = document.getElementById('message');
+      const demo = document.getElementById('demoBtn');
+
+      function show(type, text){
+        msg.className = 'msg ' + (type === 'ok' ? 'success' : 'error');
+        msg.textContent = text;
+        msg.style.display = 'block';
+        setTimeout(()=> msg.style.display = 'none', 4500);
+      }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        // تحقق بسيط على الواجهة — الربط مع Firebase Auth لاحقاً
+        const em = email.value.trim();
+        const pw = pass.value;
+
+        if(!em || !/^\S+@\S+\.\S+$/.test(em)){
+          show('err','من فضلك أدخل بريدًا إلكترونيًا صالحًا.');
+          email.focus();
+          return;
+        }
+        if(!pw || pw.length < 6){
+          show('err','كلمة السر قصيرة. يجب أن لا تقل عن 6 أحرف.');
+          pass.focus();
+          return;
+        }
+
+        // محاكاة عملية تسجيل الدخول — هنا تربط مع Firebase Auth لاحقاً
+        show('ok', 'تم تسجيل الدخول مؤقتًا — سيتم تحويلك الآن...');
+        setTimeout(()=> {
+          // هنا توجه المستخدم إلى صفحة داخل الموقع بعد تسجيل الدخول الناجح
+          window.location.href = 'dashboard.html'; // غيّر المسار حسب مشروعك
+        }, 900);
+      });
+
+      // تجربة الزائر: تعبئة تلقائية (اختياري)
+      demo.addEventListener('click', function(ev){
+        ev.preventDefault();
+        email.value = 'guest@example.com';
+        pass.value = 'guest123';
+        show('ok','تم تعبئة بيانات الزائر. اضغط تسجيل الدخول.');
+      });
+
+      // الوصول من خلال Enter يدعم الحقول تلقائياً (بسبب type=submit)
+    })();
+    
+  </script>
+</body>
+</html>
