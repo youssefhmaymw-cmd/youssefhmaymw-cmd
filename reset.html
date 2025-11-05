@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>استعادة كلمة السر — SirriYH</title>
+  <style>
+    :root{--accent1:#8b5cf6;--accent2:#06b6d4}
+    *{box-sizing:border-box}
+    body{
+      margin:0;height:100vh;display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(180deg, rgba(2,6,23,0.86), rgba(6,12,30,0.7));
+      font-family:Inter, system-ui, Arial; color:#fff;
+    }
+    .box{width:min(460px,94vw);padding:22px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04)}
+    h2{margin:0 0 8px;color:var(--accent1)}
+    p{margin:0 0 14px;color:#cbd5e1}
+    .input{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;margin-bottom:12px}
+    .btn{display:inline-block;padding:10px 16px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#041025;font-weight:700;cursor:pointer}
+    .link{color:#cbd5e1;text-decoration:none;margin-left:10px}
+    .note{font-size:13px;color:#9ca3af;margin-top:12px}
+    .msg{display:none;padding:10px;border-radius:8px;margin-top:10px}
+    .msg.ok{display:block;background:rgba(6,182,212,0.08);color:#bff5ff;border:1px solid rgba(6,182,212,0.12)}
+  </style>
+</head>
+<body>
+  <main class="box" role="main" aria-labelledby="t">
+    <h2 id="t">استعادة كلمة السر</h2>
+    <p>أدخل بريدك الإلكتروني لنرسل لك رابط إعادة تعيين كلمة السر. بعد الإرسال يمكنك العودة وتسجيل الدخول.</p>
+
+    <label for="email">البريد الإلكتروني</label>
+    <input id="email" type="email" class="input" placeholder="you@example.com" required />
+
+    <div>
+      <button id="sendBtn" class="btn">إرسال رابط إعادة التعيين</button>
+      <a href="index.html" class="link">العودة إلى تسجيل الدخول</a>
+    </div>
+
+    <div id="msg" class="msg ok" role="status" aria-live="polite"></div>
+    <div class="note">ملاحظة: هذه الصفحة تحاكي العملية. لربطها حقيقيًا استخدم Firebase Auth's sendPasswordResetEmail.</div>
+  </main>
+
+  <script>
+    (function(){
+      const email = document.getElementById('email');
+      const sendBtn = document.getElementById('sendBtn');
+      const msg = document.getElementById('msg');
+
+      sendBtn.addEventListener('click', function(){
+        const em = email.value.trim();
+        if(!em || !/^\S+@\S+\.\S+$/.test(em)){
+          msg.className = 'msg ok';
+          msg.textContent = 'أدخل بريدًا إلكترونيًا صالحًا لإرسال الرابط.';
+          msg.style.display = 'block';
+          return;
+        }
+
+        // محاكاة إرسال رابط إعادة التعيين — هنا استبدل بالنداء الفعلي إلى Firebase Auth
+        msg.className = 'msg ok';
+        msg.textContent = 'تم إرسال رابط لإعادة تعيين كلمة السر إلى ' + em + ' — تفقد بريدك الإلكتروني. سيتم إرجاعك إلى الصفحة الرئيسية.';
+        msg.style.display = 'block';
+
+        // توجيه المستخدم تلقائياً بعد 4 ثواني
+        setTimeout(()=> {
+          window.location.href = 'index.html';
+        }, 4000);
+      });
+    })();
+  </script>
+</body>
+</html>
